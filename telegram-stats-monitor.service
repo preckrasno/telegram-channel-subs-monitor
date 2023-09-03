@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 ~/proj/telegram-stats-monitor/main.py
+ExecStart=/home/ubuntu/proj/telegram-stats-monitor/venv/bin/python3 /home/ubuntu/proj/telegram-stats-monitor/main.py
 Restart=always
 
 [Install]

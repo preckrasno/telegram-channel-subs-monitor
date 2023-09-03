@@ -1,0 +1,6 @@
+venv/
+serviceAccountKey.json
+*.session
+*.session-journal
+.env
+.DS_Store

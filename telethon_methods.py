@@ -71,7 +71,7 @@ async def get_admin_actions(client):
     for entry in result.events:
         await asyncio.sleep(2)
         user = await client.get_entity(entry.user_id)
-        user_username = user.username if user.username else ''
+        user_username = "@" + user.username if user.username else ''
         user_firstname = user.first_name if user.first_name else ''
         user_lastname = user.last_name if user.last_name else ''
         

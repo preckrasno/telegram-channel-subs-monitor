@@ -16,7 +16,7 @@ if not CHAT_ID:
 
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("/home/ubuntu/proj/telegram-stats-monitor/serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 

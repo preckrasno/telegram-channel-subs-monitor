@@ -4,3 +4,4 @@ serviceAccountKey.json
 *.session-journal
 .env
 .DS_Store
+.vscode/

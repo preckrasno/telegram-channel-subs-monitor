@@ -126,6 +126,7 @@ async def get_last_message_hash(client, channel_id):
         entity = await client.get_entity(channel_id)
 
         # Fetching the last message
+        await asyncio.sleep(2)
         message = await client.get_messages(entity, limit=1)
 
         # message could be accessed by message[0].message

@@ -1,3 +1,5 @@
+# telethon_methods.py
+
 from models.admin_action import AdminAction
 import asyncio
 from decouple import config

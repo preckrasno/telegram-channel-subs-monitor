@@ -1,3 +1,5 @@
+# models/admin_action.py
+
 import hashlib
 
 class AdminAction:

@@ -1,3 +1,5 @@
+# bot_methods.py
+
 import requests
 
 def send_message_to_channel(bot_token, chat_id, message_text):

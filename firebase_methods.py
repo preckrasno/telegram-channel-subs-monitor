@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from bot_methods import send_message_to_channel
 from decouple import config
+from sentry_sdk import capture_exception
 
 
 # BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
@@ -64,3 +65,4 @@ def store_action_to_firebase(action_data: dict):
            
     except Exception as e:
         print(f"Error storing data to Firestore: {e}")
+        capture_exception(e)

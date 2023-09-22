@@ -1,6 +1,7 @@
 # bot_methods.py
 
 import requests
+from sentry_sdk import capture_exception
 
 def send_message_to_channel(bot_token, chat_id, message_text):
     """
@@ -30,3 +31,5 @@ def send_message_to_channel(bot_token, chat_id, message_text):
     else:
         # Optionally, raise an error or print the response to debug issues
         response.raise_for_status()
+        # send to sentry
+        capture_exception(response.raise_for_status())

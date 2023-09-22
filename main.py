@@ -1,10 +1,19 @@
 # main.py
 
 import asyncio
+import sentry_sdk
+
 from datetime import datetime
+from decouple import config
 
 from telethon_methods import setup_telethon, get_admin_actions
 from firebase_methods import store_action_to_firebase
+
+# Initialize Sentry at the top
+sentry_sdk.init(
+    dsn=config('SENTRY_DNS'),
+    traces_sample_rate=1.0,  # Adjust this rate as per your needs
+)
 
 client = None
 

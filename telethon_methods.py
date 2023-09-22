@@ -2,6 +2,7 @@
 
 from models.admin_action import AdminAction
 import asyncio
+import sentry_sdk
 from decouple import config
 from telethon.sync import TelegramClient
 from telethon.errors import SessionPasswordNeededError
@@ -25,23 +26,29 @@ if not CHANNEL_ID:
 ADMIN_USERNAME = config('ADMIN_USERNAME', default='')
 if not ADMIN_USERNAME:
     raise ValueError("ADMIN_USERNAME is not set!")
+sentry_sdk.init(dsn=config('SENTRY_DNS'))
 
 async def setup_telethon():
-    client = TelegramClient('anon', API_ID, API_HASH)
-    
-    if not client.is_connected():
-        await client.connect()
+    try:
+        client = TelegramClient('anon', API_ID, API_HASH)
 
-    if not await client.is_user_authorized():
-        await client.send_code_request(PHONE_NUMBER)
-        verification_code = input('Enter the code: ')
-        try:
-            await client.sign_in(PHONE_NUMBER, verification_code)
-        except SessionPasswordNeededError:
-            two_step_verif_password = input('Two-step verification is enabled. Please enter your password: ')
-            await client.sign_in(password=two_step_verif_password)
-    
-    return client
+        if not client.is_connected():
+            await client.connect()
+
+        if not await client.is_user_authorized():
+            await client.send_code_request(PHONE_NUMBER)
+            verification_code = input('Enter the code: ')
+            try:
+                await client.sign_in(PHONE_NUMBER, verification_code)
+            except SessionPasswordNeededError:
+                two_step_verif_password = input('Two-step verification is enabled. Please enter your password: ')
+                await client.sign_in(password=two_step_verif_password)
+        
+        return client
+
+    except Exception as e:
+        sentry_sdk.capture_exception(e)
+        raise
 
 async def get_admin_actions(client):
     # Get channel entity to fetch the InputChannel later

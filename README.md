@@ -8,6 +8,7 @@ This is a Python-based automation tool utilizing Telethon to emulate and automat
 - **Service-Oriented**: Runs as a continuous service on Linux, fetching admin actions every 5 minutes.
 - **Efficient Storage**: Actions are hashed based on the date and user ID. Only unique actions are saved to the Firebase Firestore database, preventing duplicates.
 - **Real-time Notifications**: Sends detailed alerts of each action to another Telegram channel or group. These alerts include user ID, nickname, first and last name, action date, and the corresponding hash.
+- **Sentry Integration (Optional)**: Monitor application health and track potential issues with Sentry. 
 
 ## Requirements
 
@@ -40,6 +41,8 @@ This is a Python-based automation tool utilizing Telethon to emulate and automat
     - Add the bot to the notification receiver channel or group.
     - Give the bot admin privileges to allow it to send messages.
 
+### Sentry (Optional):
+- **DSN**: Obtain a DSN (Data Source Name) from your Sentry account. This will be used to send error logs and tracking info to Sentry for monitoring the application's health.
 
 
 ## Installation

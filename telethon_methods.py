@@ -88,8 +88,8 @@ async def get_admin_actions(client):
         user_username = "@" + user.username if user.username else ''
         user_firstname = user.first_name if user.first_name else ''
         user_lastname = user.last_name if user.last_name else ''
-        user_phone = user.phone if user.phone else ''
-        user_description = user.about if user.about else ''
+        user_phone = user.phone if hasattr(user, 'phone') else ''
+        user_description = user.about if hasattr(user, 'about') else ''
         
 
         # Determine the action - Joined or Left

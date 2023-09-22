@@ -33,11 +33,15 @@ This is a Python-based automation tool utilizing Telethon to emulate and automat
     - Ensure you have a Telegram channel nickname you want to monitor (e.g., `@channel_name`).
 3. **Bot Token**: 
     - Create a Telegram bot via [t.me/BotFather](https://t.me/BotFather) and note down the token.
-4. **Notification Receiver**: 
+4. **Notification Receiver ID**: 
     - Decide on a Telegram channel or group to receive notifications.
     - Obtain the chat id for this destination (e.g., `-1001234567890`). 
     - If you're unfamiliar with this process, follow this [guide](https://gist.github.com/mraaroncruz/e76d19f7d61d59419002db54030ebe35) to get the chat ID.
-5. **Add bot to notification receiver**: 
+5. **Notification Receiver Invite Link**: 
+    - Create an invite link for the notification receiver channel or group.
+    - This will be used to check if all events were successfully sent to the notification receiver.
+    - Example for private channel: `https://t.me/+IybSNCg_1a2b3c4d5e`
+6. **Add bot to notification receiver**: 
     - Add the bot to the notification receiver channel or group.
     - Give the bot admin privileges to allow it to send messages.
 

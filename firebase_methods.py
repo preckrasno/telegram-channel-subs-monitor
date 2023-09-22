@@ -66,3 +66,33 @@ def store_action_to_firebase(action_data: dict):
     except Exception as e:
         print(f"Error storing data to Firestore: {e}")
         capture_exception(e)
+
+def send_missing_events_to_channel(last_known_hash):
+    admin_actions_ref = db.collection('admin_actions')
+
+    # Get the date of the last_known_hash
+    hash_date_doc = admin_actions_ref.where('hash', '==', last_known_hash).get()
+
+    if not hash_date_doc:
+        print("Hash not found.")
+        return
+
+    hash_date = hash_date_doc[0].to_dict().get('date')
+
+    # Get all actions after the date of the last_known_hash
+    missing_actions = admin_actions_ref.where('date', '>', hash_date).order_by('date').get()
+
+    for action in missing_actions:
+        action_data = action.to_dict()
+        message = "\n".join([f"{key}: {value}" for key, value in action_data.items()])
+        send_message_to_channel(BOT_API, CHAT_ID, message)
+
+def get_last_hash_from_firebase():
+    admin_actions_ref = db.collection('admin_actions')
+    
+    # Order by date to get the latest action and retrieve only one record
+    last_action = admin_actions_ref.order_by('date', direction=firestore.Query.DESCENDING).limit(1).get()
+
+    if last_action:
+        return last_action[0].to_dict().get("hash")
+    return None

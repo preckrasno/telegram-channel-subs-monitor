@@ -3,12 +3,13 @@
 from models.admin_action import AdminAction
 import asyncio
 import sentry_sdk
+import re
 from decouple import config
 from telethon.sync import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 from telethon.tl.functions.channels import GetFullChannelRequest, GetAdminLogRequest
 from telethon.tl.types import ChannelAdminLogEventActionParticipantJoin, ChannelAdminLogEventActionParticipantLeave, InputChannel, Channel
-
+from telethon.tl.functions.messages import GetHistoryRequest
 
 
 API_ID = config('API_ID', default='', cast=int)
@@ -113,3 +114,34 @@ async def get_admin_actions(client):
         actions_data.append(action)
 
     return actions_data
+
+async def get_last_message_hash(client, channel_id):
+    await asyncio.sleep(2)
+    try:
+        # get chat entity
+        entity = await client.get_entity(channel_id)
+
+        # Fetching the last message
+        message = await client.get_messages(entity, limit=1)
+
+        # message could be accessed by message[0].message
+        
+        # If there are no message, return None
+        if not message:
+            return None
+
+        # Get the text of the last message
+        last_message = message[0].message
+
+        # Use a regular expression to extract the hash
+        hash_match = re.search(r"([a-fA-F0-9]{64})", last_message)
+
+        # If a hash is found, return it, otherwise return None
+        if hash_match:
+            return hash_match.group(1)
+        else:
+            return None
+
+    except Exception as e:
+        sentry_sdk.capture_exception(e)
+        return None

@@ -88,6 +88,8 @@ async def get_admin_actions(client):
         user_username = "@" + user.username if user.username else ''
         user_firstname = user.first_name if user.first_name else ''
         user_lastname = user.last_name if user.last_name else ''
+        user_phone = user.phone if user.phone else ''
+        user_description = user.about if user.about else ''
         
 
         # Determine the action - Joined or Left
@@ -109,7 +111,9 @@ async def get_admin_actions(client):
             user_lastname,
             total_channel_members,
             0,  # total_joined placeholder
-            0   # total_left placeholder
+            0,   # total_left placeholder
+            user_phone,
+            user_description
         )
         actions_data.append(action)
 

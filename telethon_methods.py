@@ -20,13 +20,17 @@ if not API_HASH:
 PHONE_NUMBER = str(config('PHONE_NUMBER', default=''))
 if not PHONE_NUMBER:
     raise ValueError("PHONE_NUMBER is not set!")
-CHANNEL_ID = config('CHANNEL_ID', default='')
-if not CHANNEL_ID:
-    raise ValueError("CHANNEL_ID is not set!")
+CHANNEL_ID_TO_MONITOR = config('CHANNEL_ID_TO_MONITOR', default='')
+if not CHANNEL_ID_TO_MONITOR:
+    raise ValueError("CHANNEL_ID_TO_MONITOR is not set!")
 ADMIN_USERNAME = config('ADMIN_USERNAME', default='')
 if not ADMIN_USERNAME:
     raise ValueError("ADMIN_USERNAME is not set!")
-sentry_sdk.init(dsn=config('SENTRY_DNS'))
+SENTRY_DNS = config('SENTRY_DNS', default='')
+if not SENTRY_DNS:
+    raise ValueError("SENTRY_DNS is not set!")
+
+sentry_sdk.init(dsn=SENTRY_DNS)
 
 async def setup_telethon():
     try:
@@ -52,7 +56,7 @@ async def setup_telethon():
 
 async def get_admin_actions(client):
     # Get channel entity to fetch the InputChannel later
-    channel = await client.get_entity(CHANNEL_ID)
+    channel = await client.get_entity(CHANNEL_ID_TO_MONITOR)
     if not isinstance(channel, Channel):
         print("The provided ID does not belong to a channel!")
         return []

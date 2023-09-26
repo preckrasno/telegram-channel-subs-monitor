@@ -16,6 +16,10 @@ def send_message_to_channel(bot_token, chat_id, message_text):
     # Base URL for sending a message via the Telegram API
     base_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
 
+    # check if message_text is no longer than 4096 characters
+    if len(message_text) > 4096:
+        message_text = message_text[:4096]
+
     # Payload with required parameters
     payload = {
         'chat_id': chat_id,

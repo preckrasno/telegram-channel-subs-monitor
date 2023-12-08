@@ -125,21 +125,21 @@ async def get_last_message_hash(client, channel_id):
         # get chat entity
         entity = await client.get_entity(channel_id)
 
-        # Fetching the last message
+        # Fetching the last 10 messages
         await asyncio.sleep(2)
-        message = await client.get_messages(entity, limit=1)
+        messages = await client.get_messages(entity, limit=10)
 
         # message could be accessed by message[0].message
         
-        # If there are no message, return None
-        if not message:
+        # If there are no messages, return None
+        if not messages:
             return None
 
-        # Get the text of the last message
-        last_message = message[0].message
-
-        # Use a regular expression to extract the hash
-        hash_match = re.search(r"([a-fA-F0-9]{64})", last_message)
+        # find first message with hash
+        for message in messages:
+            hash_match = re.search(r"([a-fA-F0-9]{64})", message.message)
+            if hash_match:
+                break
 
         # If a hash is found, return it, otherwise return None
         if hash_match:
